@@ -180,9 +180,6 @@ pub mod signers {
     #[doc(inline)]
     pub use alloy_signer_trezor as trezor;
 
-    #[cfg(feature = "signer-turnkey")]
-    #[doc(inline)]
-    pub use alloy_signer_turnkey as turnkey;
 }
 
 /// Low-level Ethereum JSON-RPC transport abstraction and implementations.

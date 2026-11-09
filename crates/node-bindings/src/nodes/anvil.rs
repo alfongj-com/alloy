@@ -483,7 +483,7 @@ impl Anvil {
                 let key_str =
                     line.split("0x").last().ok_or(NodeError::ParsePrivateKeyError)?.trim();
                 let key_hex = hex::decode(key_str).map_err(NodeError::FromHexError)?;
-                let key = K256SecretKey::from_bytes((&key_hex[..]).into())
+                let key = K256SecretKey::from_slice(&key_hex)
                     .map_err(|_| NodeError::DeserializePrivateKeyError)?;
                 addresses.push(Address::from_public_key(SigningKey::from(&key).verifying_key()));
                 private_keys.push(key);

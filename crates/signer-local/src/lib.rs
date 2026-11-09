@@ -27,11 +27,7 @@ mod private_key;
 #[cfg(feature = "secp256k1")]
 mod secp256k1;
 
-#[cfg(feature = "yubihsm")]
-mod yubi;
 
-#[cfg(feature = "yubihsm")]
-pub use yubihsm;
 
 #[cfg(feature = "mnemonic")]
 pub use coins_bip39;
@@ -45,9 +41,6 @@ pub type PrivateKeySigner = LocalSigner<k256::ecdsa::SigningKey>;
 /// A signer instantiated with a locally stored private key, using the `secp256k1` crate.
 #[cfg(feature = "secp256k1")]
 pub type Secp256k1Signer = LocalSigner<Secp256k1Credential>;
-/// A signer instantiated with a YubiHSM.
-#[cfg(feature = "yubihsm")]
-pub type YubiSigner = LocalSigner<yubihsm::ecdsa::Signer<k256::Secp256k1>>;
 
 /// An Ethereum private-public key pair which can be used for signing messages.
 ///

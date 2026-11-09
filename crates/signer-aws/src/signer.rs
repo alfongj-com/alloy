@@ -225,7 +225,7 @@ fn decode_pubkey(resp: GetPublicKeyOutput) -> Result<VerifyingKey, AwsSignerErro
 fn decode_signature(resp: SignOutput) -> Result<ecdsa::Signature, AwsSignerError> {
     let raw = resp.signature.as_ref().ok_or(AwsSignerError::SignatureNotFound)?;
     let sig = ecdsa::Signature::from_der(raw.as_ref())?;
-    Ok(sig.normalize_s().unwrap_or(sig))
+    Ok(sig.normalize_s())
 }
 
 /// Recover an rsig from a signature under a known key by trial/error.

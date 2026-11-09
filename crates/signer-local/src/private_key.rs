@@ -62,7 +62,13 @@ impl LocalSigner<SigningKey> {
     /// Creates a new random keypair seeded with the provided RNG.
     #[inline]
     pub fn random_with<R: Rng + CryptoRng>(rng: &mut R) -> Self {
-        Self::from_signing_key(SigningKey::random(rng))
+        loop {
+            let mut bytes = zeroize::Zeroizing::new([0u8; 32]);
+            rng.fill_bytes(bytes.as_mut());
+            if let Ok(key) = SigningKey::from_slice(bytes.as_ref()) {
+                return Self::from_signing_key(key);
+            }
+        }
     }
 
     /// Borrow the secret [`NonZeroScalar`] value for this key.
@@ -93,7 +99,7 @@ impl LocalSigner<SigningKey> {
     /// array.
     #[inline]
     pub fn public_key(&self) -> B512 {
-        B512::from_slice(&self.credential.verifying_key().to_encoded_point(false).as_bytes()[1..])
+        B512::from_slice(&self.credential.verifying_key().to_sec1_point(false).as_bytes()[1..])
     }
 
     /// Converts this `PrivateKeySigner` (k256-based) to a
